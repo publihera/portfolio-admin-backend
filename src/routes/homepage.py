@@ -66,5 +66,5 @@ def update_homepage_content():
     homepage_data.section_1_bg_image_url = data.get("section_1_bg_image_url", homepage_data.section_1_bg_image_url)
 
     db.session.commit()
-    return jsonify({"message": "Homepage content updated successfully"}))
+    return jsonify({"message": "Homepage content updated successfully"})
 
