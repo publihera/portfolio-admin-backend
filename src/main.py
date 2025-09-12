@@ -7,10 +7,12 @@ from flask import Flask, send_from_directory, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from src.models.project import db
+from src.models.homepage import HomePage
 from src.routes.auth import auth_bp
 from src.routes.projects import projects_bp
 from src.routes.images import images_bp
 from src.routes.user import user_bp
+from src.routes.homepage import homepage_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 
@@ -36,6 +38,7 @@ app.register_blueprint(auth_bp, url_prefix='/api/auth')
 app.register_blueprint(projects_bp, url_prefix='/api')
 app.register_blueprint(images_bp, url_prefix='/api')
 app.register_blueprint(user_bp, url_prefix='/api')  # Keep existing user routes
+app.register_blueprint(homepage_bp, url_prefix='/api')
 
 # Create database tables
 with app.app_context():
@@ -65,6 +68,11 @@ def health_check():
         'status': 'healthy',
         'message': 'Portfolio Admin API is running'
     }), 200
+
+# Serve images from the static/images folder
+@app.route('/api/images/<path:filename>')
+def serve_static_image(filename):
+    return send_from_directory(os.path.join(app.root_path, 'static', 'images'), filename)
 
 # Serve frontend files (for production deployment)
 @app.route('/', defaults={'path': ''})
@@ -96,12 +104,4 @@ def serve(path):
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
-
-from src.models.homepage import HomePage
-
-
-from src.routes.homepage import homepage_bp
-
-
-app.register_blueprint(homepage_bp, url_prefix=\'/api\')
 
