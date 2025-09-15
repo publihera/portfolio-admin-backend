@@ -29,7 +29,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
 # Initialize extensions
-CORS(app, origins="*")  # Allow all origins for development
+CORS(app, origins=["https://christianbogaert.netlify.app", "https://68c853a0a0f9d52f3ea61887--christianbogaert.netlify.app"])
 jwt = JWTManager(app)
 db.init_app(app)
 
